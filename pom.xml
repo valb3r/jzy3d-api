@@ -1,0 +1,175 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.jzy3d</groupId>
+	<artifactId>thermocalc-chart3d</artifactId>
+	<version>1.0.1-SNAPSHOT</version>
+	<name>Thermocalc 3d Charts</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<version.maven.plugins.invoker>1.9</version.maven.plugins.invoker>
+		<version.maven.plugins.shade>1.7.1</version.maven.plugins.shade>
+		<version.maven.plugins.proguard>2.0.6</version.maven.plugins.proguard>
+		<version.proguard>5.0</version.proguard>
+		<version.javadoc>2.9.1</version.javadoc>
+		<version.mvn.javadoc>2.9.1</version.mvn.javadoc>
+
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jzy3d</groupId>
+			<artifactId>jzy3d-api</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jzy3d</groupId>
+			<artifactId>jzy3d-dual-axe</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.9</version>
+			<type>jar</type>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>java.util.logging.config.file</name>
+							<value>logging.properties</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<!-- ZIP PROJECT + SAMPLE CODES  -->
+
+			<!-- TODO : copy this pom to assembly/pom.xml -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>package-guide</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<!-- <archive>
+								<manifest>
+									<mainClass>com.jzy3d.surfedit.DemoTableMapping</mainClass>
+								</manifest>
+							</archive> -->
+							<descriptors>
+								<descriptor>src/assembly/product.xml</descriptor>
+							</descriptors>
+							<finalName>${project.name}-sdk-${project.version}</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- UNZIP TO VERIFY MVN PACKAGE -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>unzip-guide</id>
+						<phase>pre-integration-test</phase>
+						<configuration>
+							<tasks>
+								<echo message="unzipping sdk full" />
+								<unzip src="target/${project.name}-sdk-${project.version}-product.zip" dest="target/verify-product-unzip/" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- RUN MAVEN ON EXPANDED PACKAGE -->
+			<plugin>
+				<artifactId>maven-invoker-plugin</artifactId>
+				<version>${version.maven.plugins.invoker}</version>
+				<configuration>
+					<!-- <settingsFile>src/it/settings.xml</settingsFile> -->
+					<cloneProjectsTo>${project.build.directory}/verify-product-clone/</cloneProjectsTo>
+					<projectsDirectory>${project.build.directory}/verify-product-unzip/</projectsDirectory>
+					<localRepositoryPath>${project.build.directory}/verify-product-local-repo</localRepositoryPath>
+
+					<pomIncludes>
+						<pomInclude>${project.name}-${project.version}/pom.xml</pomInclude>
+						<!-- <pomInclude>*/pom.xml</pomInclude> -->
+					</pomIncludes>
+					<!-- <postBuildHookScript>verify</postBuildHookScript> -->
+					<!-- no extension required -->
+					<properties>
+						<java.util.Arrays.useLegacyMergeSort>true</java.util.Arrays.useLegacyMergeSort>
+					</properties>
+				</configuration>
+				<executions>
+					<execution>
+						<id>test-mvn-guide</id>
+						<goals>
+							<goal>run</goal><!-- equivalent integration-test+verify -->
+							<!-- <goal>integration-test</goal> <goal>verify</goal> -->
+							<!-- verify forces build to fail if running MVN on the generated project
+								fails -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- RELEASE PLUGIN TO HELP CREATE RELEASE BRANCHES -->
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>jzy3d-snapshots</id>
+			<name>Jzy3d Snapshots</name>
+			<url>http://maven.jzy3d.org/snapshots/</url>
+		</repository>
+		<repository>
+			<id>jzy3d-releases</id>
+			<name>Jzy3d Releases</name>
+			<url>http://maven.jzy3d.org/releases/</url>
+		</repository>
+	</repositories>
+</project>
