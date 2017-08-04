@@ -1,5 +1,4 @@
 package com.thermocalc.chart3d;
-import org.jzy3d.bridge.swing.ChartGroupWindow;
 import org.jzy3d.chart.AWTChart;
 import org.jzy3d.colors.Color;
 import org.jzy3d.colors.ColorMapper;
@@ -12,25 +11,10 @@ import org.jzy3d.plot3d.rendering.canvas.Quality;
 
 import com.thermocalc.chart3d.fallback.FallbackChart;
 import com.thermocalc.chart3d.fallback.FallbackChartFactory;
-import com.thermocalc.chart3d.fallback.FallbackChartFrame;
+import com.thermocalc.chart3d.fallback.FallbackChartFrameAbstract;
+import com.thermocalc.chart3d.fallback.FallbackChartFrameMiglayout;
 
-/**
- * Showing how to pipe an offscreen Jzy3d chart image to a JavaFX ImageView.
- * 
- * {@link JavaFXChartFactory} delivers dedicated  {@link JavaFXCameraMouseController}
- * and {@link JavaFXRenderer3d}
- * 
- * Support 
- * Rotation control with left mouse button hold+drag
- * Scaling scene using mouse wheel 
- * Animation (camera rotation with thread) 
- * 
- * TODO : 
- * Mouse right click shift
- * Keyboard support (rotate/shift, etc)
- * 
- * @author Martin Pernollet
- */
+
 public class DemoFallbackChart {
     public static void main(String[] args) {
         
@@ -39,24 +23,12 @@ public class DemoFallbackChart {
         AWTChart chart  = getDemoChart(factory);
         
         
-        FallbackChartFrame w = new FallbackChartFrame(chart);
+        //FallbackChartFrameAbstract w = new FallbackChartFrameSwing(chart);
+        FallbackChartFrameAbstract w = new FallbackChartFrameMiglayout(chart);
         
         
         chart.addMouseCameraController();
-        chart.addKeyboardCameraController();
-        /*ImageView imageView = factory.bindImageView(chart);
 
-        // JavaFX
-        StackPane pane = new StackPane();
-        Scene scene = new Scene(pane);
-        stage.setScene(scene);
-        stage.show();
-        pane.getChildren().add(imageView);
-
-        factory.addSceneSizeChangedListener(chart, scene);
-        
-        stage.setWidth(500);
-        stage.setHeight(500);*/
     }
 
     private static AWTChart getDemoChart(FallbackChartFactory factory) {

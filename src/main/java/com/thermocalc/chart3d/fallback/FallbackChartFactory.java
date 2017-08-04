@@ -4,13 +4,10 @@ import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Date;
-
-import javafx.scene.image.ImageView;
 
 import org.apache.log4j.Logger;
 import org.jzy3d.chart.AWTChart;
@@ -19,13 +16,10 @@ import org.jzy3d.chart.controllers.keyboard.screenshot.AWTScreenshotKeyControlle
 import org.jzy3d.chart.controllers.keyboard.screenshot.IScreenshotKeyController;
 import org.jzy3d.chart.controllers.keyboard.screenshot.IScreenshotKeyController.IScreenshotEventListener;
 import org.jzy3d.chart.controllers.keyboard.screenshot.NewtScreenshotKeyController;
-import org.jzy3d.chart.controllers.mouse.AWTMouseUtilities;
 import org.jzy3d.chart.controllers.mouse.camera.AWTCameraMouseController;
 import org.jzy3d.chart.controllers.mouse.camera.ICameraMouseController;
-import org.jzy3d.chart.controllers.mouse.camera.NewtCameraMouseController;
 import org.jzy3d.chart.factories.AWTChartComponentFactory;
 import org.jzy3d.chart.factories.IChartComponentFactory;
-import org.jzy3d.maths.Coord2d;
 import org.jzy3d.maths.Utils;
 import org.jzy3d.plot3d.rendering.canvas.OffscreenCanvas;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
@@ -59,11 +53,12 @@ public class FallbackChartFactory extends AWTChartComponentFactory {
     /* ########################################### */
 
     /**
-     * Register for renderer notifications with a new JavaFX Image
+     * Register for renderer notifications so that new {@link BufferedImage} are
+     * sent to {@link ImagePanel}
      */
     public static void bind(final ImagePanel imageView, AWTChart chart) {
         if (!(chart.getCanvas().getRenderer() instanceof AWTImageRenderer3d)) {
-            LOGGER.error("NOT BINDING IMAGE VIEW TO CHART AS NOT A JAVAFX RENDERER");
+            LOGGER.error("NOT BINDING IMAGE VIEW TO CHART AS NOT A AWTImageRenderer3d RENDERER");
             return;
         }
 
@@ -74,19 +69,18 @@ public class FallbackChartFactory extends AWTChartComponentFactory {
             public void onDisplay(Object image) {
                 if (image != null) {
                     imageView.setImage((java.awt.Image) image);
-                    System.out.println("image");
-                    
-                 // Obligatoire pour que l'image soit rafraichie.
-                    // faudrait bouger ça dans le bind!!
+                    //System.out.println("image");
+
+                    // Obligatoire pour que l'image soit rafraichie.
                     ((FallbackChart) chart).getImagePanel().repaint();
                 } else {
                     LOGGER.error("image is null while listening to renderer");
                 }
             }
         });
-        
-        //imageView.setFocusable(true);
-        //imageView.setF
+
+        // imageView.setFocusable(true);
+        // imageView.setF
 
         // imageView.setImage((java.awt.Image)renderer.getLastScreenshotImage());
     }
@@ -121,6 +115,21 @@ public class FallbackChartFactory extends AWTChartComponentFactory {
     }
 
     protected static void resetTo(Chart chart, double width, double height) {
+        /*if(width<1){
+            width=1;
+        }
+        if(height<1){
+            height=1;
+        }*/
+        
+        if(height<1 || width<1){
+            LOGGER.error("resetTo : width=" + width + "height=" + height);
+            return;
+        }
+        else{
+            LOGGER.info("resetTo : width=" + width + "height=" + height);
+        }
+        
         if (chart.getCanvas() instanceof OffscreenCanvas) {
             OffscreenCanvas canvas = (OffscreenCanvas) chart.getCanvas();
 
@@ -154,36 +163,41 @@ public class FallbackChartFactory extends AWTChartComponentFactory {
                         targets = new ArrayList<Chart>(1);
                     targets.add(chart);
 
-                    // TODO : CREATE FallbackCanvas wrapping/extending ImagePanel, rather than injecting in FallbackChart
-                    //chart.getCanvas().addMouseController(this);
-
+                    // TODO : CREATE FallbackCanvas wrapping/extending
+                    // ImagePanel, rather than injecting in FallbackChart
                     ImagePanel panel = ((FallbackChart) chart).getImagePanel();
                     panel.addMouseListener(this);
-                   panel.addMouseMotionListener(this);
-                   panel.addMouseWheelListener(this);
+                    panel.addMouseMotionListener(this);
+                    panel.addMouseWheelListener(this);
+                    // was : chart.getCanvas().addMouseController(this);
                 }
-                
+
                 @Override
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
-                    System.out.println("mouse press");
-                    chart.render(); // CE MODE DEVRAIT POUVOIR ETRE ACTIVE DANS LA CLASSE MERE
+                    // System.out.println("mouse press");
+                    chart.render(); // CE MODE DEVRAIT POUVOIR ETRE ACTIVE DANS
+                                    // LA CLASSE MERE
                 }
-                
+
                 @Override
                 public void mouseDragged(MouseEvent e) {
                     super.mouseDragged(e);
-                    System.out.println("mouse drag");
-                    
-                    chart.render(); // CE MODE DEVRAIT POUVOIR ETRE ACTIVE DANS LA CLASSE MERE
-                    
-                    
-                    
+                    // System.out.println("mouse drag");
+
+                    chart.render(); 
+
+                }
+                
+                @Override
+                public void mouseWheelMoved(MouseWheelEvent e) {
+                    super.mouseWheelMoved(e);
+                    chart.render();
                 }
             };
         else
             throw new IllegalArgumentException("Unxpected chart type");
-            //return new NewtCameraMouseController(chart);
+        // return new NewtCameraMouseController(chart);
     }
 
     /*
