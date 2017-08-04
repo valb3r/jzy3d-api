@@ -6,6 +6,10 @@ dimanche 18 juin   :
 vendredi 23 juin   : 3h train fix rendering of double scene
 dimanche 2 juillet : 18h-18h20 setup project
 
+
+mardi 1 août : 10h-12h fallback chart
+vendredi 4 aout : 15h30-17h30 fallback chart on miglayout, debugging ticks for tiny charts.
+
 # Requirements
 
 I guess 1-3 is highly wanted for a first version. 4 and 5 is nice and would be great to have but not a must for a first release.

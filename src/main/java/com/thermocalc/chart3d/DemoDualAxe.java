@@ -24,7 +24,7 @@ import org.jzy3d.plot3d.text.drawable.DrawableTextBitmap;
 // -UNDER RARE VIEWPOINTS, BOTH Z AXIS RENDER ON SAME SIDE
 // -BLUE MAIN COLOR FOR CBAR = YELLOW BACKGROUND IN CBAR
 // -LE HALIGN TOURNE PARFOIS LES LABEL VERS L INTERIEUR
-public class DemoThermocalcChart extends AbstractAnalysis {
+public class DemoDualAxe extends AbstractAnalysis {
     float zoffset = 10;
     float alpha1 = 0.75f;
     float alpha2 = 0.45f;
@@ -38,10 +38,10 @@ public class DemoThermocalcChart extends AbstractAnalysis {
 
 
     public static void main(String[] args) throws Exception {
-        AnalysisLauncher.open(new DemoThermocalcChart(), new Rectangle(200, 200, 800, 600));
+        AnalysisLauncher.open(new DemoDualAxe(), new Rectangle(200, 200, 800, 600));
     }
 
-    public DemoThermocalcChart() {
+    public DemoDualAxe() {
     }
 
     @Override
