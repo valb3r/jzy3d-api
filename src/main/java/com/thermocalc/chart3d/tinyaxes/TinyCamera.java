@@ -1,5 +1,7 @@
 package com.thermocalc.chart3d.tinyaxes;
 
+import java.util.Arrays;
+
 import org.apache.log4j.Logger;
 import org.jzy3d.maths.Coord3d;
 import org.jzy3d.plot3d.rendering.view.Camera;
@@ -39,18 +41,18 @@ public class TinyCamera extends Camera{
         //viewport[4] = 600;
 
         /*
-        LOGGER.info("viewport : " + Arrays.toString(viewport));
-        LOGGER.info("modelView : " + Arrays.toString(modelView));
-        LOGGER.info("projection : " + Arrays.toString(projection));
         */
         
         boolean s = glu.gluUnProject(screen.x, screen.y, screen.z, modelView, 0, projection, 0, viewport, 0, worldcoord, 0);
-        if (!s)
+        if (!s){
             failedProjection("Could not retrieve screen coordinates in model.");
-
+            LOGGER.info("viewport : " + Arrays.toString(viewport));
+            LOGGER.info("modelView : " + Arrays.toString(modelView));
+            LOGGER.info("projection : " + Arrays.toString(projection));
+            LOGGER.info("worldcoord : " + Arrays.toString(worldcoord));
+        }
         
-        // LOGGER.info("worldcoord : " + Arrays.toString(worldcoord));
-
+        
         
         return new Coord3d(worldcoord[0], worldcoord[1], worldcoord[2]);
     }

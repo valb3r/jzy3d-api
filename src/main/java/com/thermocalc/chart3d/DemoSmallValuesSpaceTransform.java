@@ -1,7 +1,6 @@
 package com.thermocalc.chart3d;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,19 +20,21 @@ import org.jzy3d.plot3d.builder.Builder;
 import org.jzy3d.plot3d.primitives.Shape;
 import org.jzy3d.plot3d.primitives.axes.AxeBox;
 import org.jzy3d.plot3d.primitives.axes.IAxe;
+import org.jzy3d.plot3d.primitives.axes.layout.renderers.ScientificNotationTickRenderer;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
 import org.jzy3d.plot3d.rendering.view.Camera;
 import org.jzy3d.plot3d.rendering.view.View;
 import org.jzy3d.plot3d.rendering.view.ViewportMode;
+import org.jzy3d.plot3d.transform.space.SpaceTransform;
+import org.jzy3d.plot3d.transform.space.SpaceTransformer;
 
 import com.thermocalc.chart3d.tinyaxes.TinyAxe;
 import com.thermocalc.chart3d.tinyaxes.TinyCamera;
-import com.thermocalc.chart3d.tinyaxes.TinyScientificNotationTickRenderer;
 
-public class DemoSmallValues extends AbstractAnalysis {
+public class DemoSmallValuesSpaceTransform extends AbstractAnalysis {
 
     public static void main(String[] args) throws Exception {
-        AnalysisLauncher.open(new DemoSmallValues());
+        AnalysisLauncher.open(new DemoSmallValuesSpaceTransform());
     }
 
     @Override
@@ -55,18 +56,37 @@ public class DemoSmallValues extends AbstractAnalysis {
             
             List<Coord3d> coords = FileDataset.loadList("data/thermocalc-sample.csv");
             
+            Coord3d min = Coord3d.min(coords);
+            Coord3d max = Coord3d.max(coords);
+            float zRange = max.z - min.z;
+            
             // The trick is here : normalizing 
-            BigDecimal zMulUp = new BigDecimal(1E+29);
-            BigDecimal zMulDown = new BigDecimal(1E-29);
-            Coord3d.mul(coords, 1, 1, zMulUp.floatValue());
+            SpaceTransformer normalize = new SpaceTransformer(null, null, new SpaceTransform(){
+                float normMin = -10;
+                float normMax = 10;
+                float normRange = normMax - normMin;
+                
+                @Override
+                public float compute(float value) {
+                    float centered = (value + min.z);
+                    
+                    return (zRange-centered) / normRange;
+                }
+                
+            });
             
             
+            
+            // Surface
             final Shape surfaces = (Shape) Builder.buildDelaunay(coords);
             surfaces.setColorMapper(new ColorMapper(new ColorMapRainbow(), surfaces.getBounds().getZmin(), surfaces.getBounds().getZmax(), new Color(1, 1, 1, .5f)));
             surfaces.setFaceDisplayed(true);
             surfaces.setWireframeDisplayed(true);
             surfaces.setWireframeColor(Color.BLACK);
-
+            
+            surfaces.setSpaceTransformer(normalize);
+            
+            // Chart
             Quality advancedQualitySmoothPointTrue = Quality.Intermediate;//new Quality(true, true, true, true, false, false, true);
             chart = f.newChart(advancedQualitySmoothPointTrue, Toolkit.awt);
             chart.getScene().getGraph().add(surfaces);
@@ -75,13 +95,15 @@ public class DemoSmallValues extends AbstractAnalysis {
             float[] s = {1.0f, 1.0f};
             chart.getCanvas().setPixelScale(s);
             
-            chart.getAxeLayout().setZTickRenderer( new TinyScientificNotationTickRenderer(2, zMulDown.floatValue()) );   
+            chart.getAxeLayout().setZTickRenderer( new ScientificNotationTickRenderer(2));   
+            
+            //chart.getAxeLayout().setZTickRenderer( new TinyScientificNotationTickRenderer(2, zMulDown.floatValue()) );   
             //chart.getAxeLayout().setZTickLabelDisplayed(true);
 
             chart.getView().updateBounds();
             chart.render();
         } catch (IOException ex) {
-            Logger.getLogger(DemoSmallValues.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DemoSmallValuesSpaceTransform.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
