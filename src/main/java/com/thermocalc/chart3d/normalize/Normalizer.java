@@ -5,7 +5,7 @@ import java.util.List;
 import org.jzy3d.maths.Coord3d;
 
 public class Normalizer {
-    static boolean debug = true;
+    static boolean debug = false;
 
     public static class Model {
         Coord3d shift;
@@ -13,15 +13,15 @@ public class Normalizer {
     }
 
     /** Normalize Z components between 0 and 1 */
-    public static Model normalize(List<Coord3d> coords) {
+    public static Model normalizeZ(List<Coord3d> coords) {
         Coord3d min = Coord3d.min(coords);
         Coord3d max = Coord3d.max(coords);
-        float zRange = max.z - min.z;
+        Coord3d range = max.sub(min);
 
         if (debug) {
             System.out.println(Coord3d.min(coords));
             System.out.println(Coord3d.max(coords));
-            System.out.println(zRange);
+            System.out.println(range.z);
         }
 
         // ---------------------------------
@@ -33,7 +33,7 @@ public class Normalizer {
 
         Model model = new Model();
         model.shift = min.mul(-1f, -1f, -1f);
-        model.factor = new Coord3d(1, 1, zRange);
+        model.factor = new Coord3d(1, 1, range.z);
 
         // ---------------------------------
         // apply model
@@ -72,5 +72,15 @@ public class Normalizer {
             System.out.println("after unshift from 0, min Z is:" + Coord3d.min(coords).z);
             System.out.println("after unshift from 0, max Z is:" + Coord3d.max(coords).z);
         }
+    }
+
+    public static void normalize(Coord3d coords, Model model) {
+        coords.addSelf(model.shift); // shift to 0
+        coords.divSelf(model.factor); // normalize between 0 and 1
+    }
+
+    public static void unnormalize(Coord3d coords, Model model) {
+        coords.mulSelf(model.factor); // normalize between 0 and 1
+        coords.subSelf(model.shift); // shift back from 0
     }
 }

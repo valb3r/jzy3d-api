@@ -1,4 +1,4 @@
-package com.thermocalc.chart3d;
+package com.thermocalc.chart3d.demos.tinyZpb;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,16 +25,17 @@ import org.jzy3d.plot3d.rendering.canvas.Quality;
 import org.jzy3d.plot3d.rendering.view.Camera;
 import org.jzy3d.plot3d.rendering.view.View;
 import org.jzy3d.plot3d.rendering.view.ViewportMode;
-import org.jzy3d.plot3d.transform.space.SpaceTransform;
-import org.jzy3d.plot3d.transform.space.SpaceTransformer;
 
-import com.thermocalc.chart3d.tinyaxes.TinyAxe;
-import com.thermocalc.chart3d.tinyaxes.TinyCamera;
-
-public class DemoSmallValuesSpaceTransform extends AbstractAnalysis {
+/**
+ * Show a chart failing to draw tick labels due to 3d to 2d projection error
+ * with very small z values (around 1e-29)
+ * 
+ * @author Martin Pernollet
+ */
+public class DemoTinyValuesProblem extends AbstractAnalysis {
 
     public static void main(String[] args) throws Exception {
-        AnalysisLauncher.open(new DemoSmallValuesSpaceTransform());
+        AnalysisLauncher.open(new DemoTinyValuesProblem());
     }
 
     @Override
@@ -56,37 +57,12 @@ public class DemoSmallValuesSpaceTransform extends AbstractAnalysis {
             
             List<Coord3d> coords = FileDataset.loadList("data/thermocalc-sample.csv");
             
-            Coord3d min = Coord3d.min(coords);
-            Coord3d max = Coord3d.max(coords);
-            float zRange = max.z - min.z;
-            
-            // The trick is here : normalizing 
-            SpaceTransformer normalize = new SpaceTransformer(null, null, new SpaceTransform(){
-                float normMin = -10;
-                float normMax = 10;
-                float normRange = normMax - normMin;
-                
-                @Override
-                public float compute(float value) {
-                    float centered = (value + min.z);
-                    
-                    return (zRange-centered) / normRange;
-                }
-                
-            });
-            
-            
-            
-            // Surface
             final Shape surfaces = (Shape) Builder.buildDelaunay(coords);
             surfaces.setColorMapper(new ColorMapper(new ColorMapRainbow(), surfaces.getBounds().getZmin(), surfaces.getBounds().getZmax(), new Color(1, 1, 1, .5f)));
             surfaces.setFaceDisplayed(true);
             surfaces.setWireframeDisplayed(true);
             surfaces.setWireframeColor(Color.BLACK);
-            
-            surfaces.setSpaceTransformer(normalize);
-            
-            // Chart
+
             Quality advancedQualitySmoothPointTrue = Quality.Intermediate;//new Quality(true, true, true, true, false, false, true);
             chart = f.newChart(advancedQualitySmoothPointTrue, Toolkit.awt);
             chart.getScene().getGraph().add(surfaces);
@@ -95,15 +71,13 @@ public class DemoSmallValuesSpaceTransform extends AbstractAnalysis {
             float[] s = {1.0f, 1.0f};
             chart.getCanvas().setPixelScale(s);
             
-            chart.getAxeLayout().setZTickRenderer( new ScientificNotationTickRenderer(2));   
-            
-            //chart.getAxeLayout().setZTickRenderer( new TinyScientificNotationTickRenderer(2, zMulDown.floatValue()) );   
+            chart.getAxeLayout().setZTickRenderer( new ScientificNotationTickRenderer(2) );   
             //chart.getAxeLayout().setZTickLabelDisplayed(true);
 
             chart.getView().updateBounds();
             chart.render();
         } catch (IOException ex) {
-            Logger.getLogger(DemoSmallValuesSpaceTransform.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DemoTinyValuesProblem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

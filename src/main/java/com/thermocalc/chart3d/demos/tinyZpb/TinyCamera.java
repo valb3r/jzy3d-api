@@ -1,4 +1,4 @@
-package com.thermocalc.chart3d.tinyaxes;
+package com.thermocalc.chart3d.demos.tinyZpb;
 
 import java.util.Arrays;
 
@@ -20,14 +20,12 @@ import com.jogamp.opengl.glu.GLU;
  * @see https://jogamp.org/bugzilla/show_bug.cgi?id=483
  * 
  * @author Martin
- *
  */
 public class TinyCamera extends Camera{
     static Logger LOGGER = Logger.getLogger(TinyCamera.class);
 
     public TinyCamera(Coord3d target) {
         super(target);
-        // TODO Auto-generated constructor stub
     }
     
     public Coord3d screenToModel(GL gl, GLU glu, Coord3d screen) {
@@ -35,14 +33,7 @@ public class TinyCamera extends Camera{
         float modelView[] = getModelViewAsFloat(gl);
         float projection[] = getProjectionAsFloat(gl);
         float worldcoord[] = new float[3];// wx, wy, wz;// returned xyz coords
-        //float screeny = viewport[3] - (int)screen.y - 1;
 
-        //viewport[3] = 600;
-        //viewport[4] = 600;
-
-        /*
-        */
-        
         boolean s = glu.gluUnProject(screen.x, screen.y, screen.z, modelView, 0, projection, 0, viewport, 0, worldcoord, 0);
         if (!s){
             failedProjection("Could not retrieve screen coordinates in model.");
@@ -51,8 +42,6 @@ public class TinyCamera extends Camera{
             LOGGER.info("projection : " + Arrays.toString(projection));
             LOGGER.info("worldcoord : " + Arrays.toString(worldcoord));
         }
-        
-        
         
         return new Coord3d(worldcoord[0], worldcoord[1], worldcoord[2]);
     }
@@ -94,17 +83,5 @@ public class TinyCamera extends Camera{
         *objy = out[1];
         *objz = out[2];
         return(GL_TRUE);
-    }*/
-    
-    protected float[] getViewPortAsFloat(GL gl) {
-        float viewport[] = new float[4];
-        gl.glGetFloatv(GL.GL_VIEWPORT, viewport, 0);
-        return viewport;
-    }
-
-    protected int[] getViewPortAsInt(GL gl) {
-        int viewport[] = new int[4];
-        gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-        return viewport;
-    }
+    }*/    
 }

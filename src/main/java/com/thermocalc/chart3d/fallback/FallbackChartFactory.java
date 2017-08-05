@@ -115,19 +115,12 @@ public class FallbackChartFactory extends AWTChartComponentFactory {
     }
 
     protected static void resetTo(Chart chart, double width, double height) {
-        /*if(width<1){
-            width=1;
-        }
-        if(height<1){
-            height=1;
-        }*/
-        
         if(height<1 || width<1){
-            LOGGER.error("resetTo : width=" + width + "height=" + height);
+            //LOGGER.error("resetTo : width=" + width + "height=" + height);
             return;
         }
         else{
-            LOGGER.info("resetTo : width=" + width + "height=" + height);
+            //LOGGER.info("resetTo : width=" + width + "height=" + height);
         }
         
         if (chart.getCanvas() instanceof OffscreenCanvas) {
