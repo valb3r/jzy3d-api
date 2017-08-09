@@ -25,7 +25,7 @@ import org.jzy3d.plot3d.rendering.view.ViewportMode;
 import org.jzy3d.plot3d.transform.space.SpaceTransformLog;
 import org.jzy3d.plot3d.transform.space.SpaceTransformer;
 
-import com.thermocalc.chart3d.normalize.Normalizer;
+import com.thermocalc.chart3d.tinyAxes.Normalizer;
 
 public class DemoLogChart_NOTREADY extends AbstractAnalysis {
 

@@ -14,7 +14,14 @@ import com.thermocalc.chart3d.fallback.FallbackChartFactory;
 import com.thermocalc.chart3d.fallback.FallbackChartFrameAbstract;
 import com.thermocalc.chart3d.fallback.FallbackChartFrameMiglayout;
 
-
+/**
+ * Illustrate how to create charts that properly downsize when used in MigLayout and MacOSX.
+ * 
+ * The idea is to render the chart offscreen in an AWT image, and then display this image in a standard
+ * swing component.
+ * 
+ * @author Martin Pernollet
+ */
 public class DemoFallbackChart {
     public static void main(String[] args) {
         
