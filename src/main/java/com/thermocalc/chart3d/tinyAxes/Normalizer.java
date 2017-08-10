@@ -21,7 +21,7 @@ public class Normalizer {
     
     /** Normalize each dimension between 0 and 1*/
     public static Model normalize(List<Coord3d> coords) {
-        Pair<Coord3d,Coord3d> minMax = Coord3d.minmax(coords);
+        Pair<Coord3d,Coord3d> minMax = Coord3d.minMax(coords);
         Coord3d min = minMax.a;
         Coord3d max = minMax.b;
 
