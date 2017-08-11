@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+	<id>product</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<outputDirectory></outputDirectory>
+			<directory>./</directory>
+			<includes>
+				<include>COPYRIGHT.md</include>
+				<include>README.md</include>
+			</includes>
+		</fileSet>
+	
+		<!-- SOURCES -->
+		<fileSet>
+			<outputDirectory>src/main</outputDirectory>
+			<directory>src/main</directory>
+		</fileSet>
+
+		<!-- TEMPLATE DATA FOLDER -->
+ 		<fileSet>
+			<outputDirectory></outputDirectory>
+			<directory>src/assembly/template-product</directory>
+		</fileSet>
+ 
+		<!-- MAIN JAR -->
+		<fileSet>
+			<outputDirectory>lib</outputDirectory>
+			<directory>target</directory>
+			<includes>
+				<include>jzy3d-polar-${pom.version}.jar</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+
+	<!-- DEPENDENCIES -->
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>lib</outputDirectory>
+	        <includes>
+<!-- 	        	<include>org.jogamp.gluegen:gluegen-rt-main</include>
+	        	<include>org.jogamp.jogl:jogl-all-main</include>
+ -->
+ 				<include>org.jzy3d:jzy3d-api:jar</include>
+ 				<include>org.jzy3d:jzy3d-jdt-core:jar</include>
+ 				<include>org.jzy3d:jzy3d-depthpeeling:jar</include>
+ 				
+ 				<include>net.sourceforge.jmatio:jmatio:jar</include>
+ 				<include>com.miglayout:miglayout:jar</include>
+				<include>net.sf.opencsv:opencsv:jar</include>
+				<include>log4j:log4j:jar</include>
+
+	        	<include>org.jogamp.gluegen:gluegen-rt:jar</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-macosx-universal</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-linux-amd64</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-linux-armv6</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-linux-armv6hf</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-linux-i586</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-macosx-universal</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-solaris-amd64</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-solaris-i586</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-windows-amd64</include>
+				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-windows-i586</include>
+
+	        	<include>org.jogamp.jogl:jogl-all:jar</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-linux-amd64</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-linux-armv6</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-linux-armv6hf</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-linux-i586</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-macosx-universal</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-solaris-amd64</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-solaris-i586</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-windows-amd64</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-windows-i586</include>
+				<!--
+				[INFO] Excluding org.jogamp.gluegen:gluegen-rt:jar:natives-android-armv6:2.1.5-01 from the shaded jar.
+				[INFO] Excluding org.jogamp.jogl:jogl-all:jar:natives-android-armv6:2.1.5-01 from the shaded jar.
+				 -->
+	        </includes>
+			<excludes>
+				<exclude>*:pom</exclude>
+			</excludes>
+		</dependencySet>
+	</dependencySets>
+</assembly>
