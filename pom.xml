@@ -37,7 +37,17 @@
 			<artifactId>jzy3d-logarithm</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
-
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.miglayout</groupId>
+			<artifactId>miglayout</artifactId>
+			<version>3.7.4</version>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -74,7 +84,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- ZIP PROJECT + SAMPLE CODES  -->
+			<!-- ZIP PROJECT + SAMPLE CODES -->
 
 			<!-- TODO : copy this pom to assembly/pom.xml -->
 			<plugin>
@@ -88,15 +98,12 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<!-- <archive>
-								<manifest>
-									<mainClass>com.jzy3d.surfedit.DemoTableMapping</mainClass>
-								</manifest>
-							</archive> -->
+							<!-- <archive> <manifest> <mainClass>com.jzy3d.surfedit.DemoTableMapping</mainClass> 
+								</manifest> </archive> -->
 							<descriptors>
 								<descriptor>src/assembly/product.xml</descriptor>
 							</descriptors>
-							<finalName>${project.name}-sdk-${project.version}</finalName>
+							<finalName>${project.artifactId}-sdk-${project.version}</finalName>
 						</configuration>
 					</execution>
 				</executions>
@@ -114,7 +121,9 @@
 						<configuration>
 							<tasks>
 								<echo message="unzipping sdk full" />
-								<unzip src="target/${project.name}-sdk-${project.version}-product.zip" dest="target/verify-product-unzip/" />
+								<unzip
+									src="target/${project.artifactId}-sdk-${project.version}-product.zip"
+									dest="target/verify-product-unzip/" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -135,7 +144,7 @@
 					<localRepositoryPath>${project.build.directory}/verify-product-local-repo</localRepositoryPath>
 
 					<pomIncludes>
-						<pomInclude>${project.name}-${project.version}/pom.xml</pomInclude>
+						<pomInclude>${project.artifactId}-${project.version}/pom.xml</pomInclude>
 						<!-- <pomInclude>*/pom.xml</pomInclude> -->
 					</pomIncludes>
 					<!-- <postBuildHookScript>verify</postBuildHookScript> -->
@@ -149,8 +158,9 @@
 						<id>test-mvn-guide</id>
 						<goals>
 							<goal>run</goal><!-- equivalent integration-test+verify -->
-							<!-- <goal>integration-test</goal> <goal>verify</goal> -->
-							<!-- verify forces build to fail if running MVN on the generated project
+							<!-- <goal>integration-test</goal> -->
+							<goal>verify</goal>
+							<!-- verify forces build to fail if running MVN on the generated project 
 								fails -->
 						</goals>
 					</execution>

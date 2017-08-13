@@ -20,6 +20,16 @@
 			<outputDirectory>src/main</outputDirectory>
 			<directory>src/main</directory>
 		</fileSet>
+		<fileSet>
+			<outputDirectory>src/test</outputDirectory>
+			<directory>src/test</directory>
+		</fileSet>
+
+		<fileSet>
+			<outputDirectory>data</outputDirectory>
+			<directory>data</directory>
+		</fileSet>
+
 
 		<!-- TEMPLATE DATA FOLDER -->
  		<fileSet>
@@ -48,9 +58,8 @@
  
 <!-- 	        	<include>org.jogamp.gluegen:gluegen-rt-main</include>
 	        	<include>org.jogamp.jogl:jogl-all-main</include>
- -->
- 
- 				<!-- <include>org.jzy3d:jzy3d-api:jar</include>
+  -->
+ 				<include>org.jzy3d:jzy3d-api:jar</include>
  				<include>org.jzy3d:jzy3d-jdt-core:jar</include>
  				<include>org.jzy3d:jzy3d-depthpeeling:jar</include>
  				
@@ -58,6 +67,9 @@
  				<include>com.miglayout:miglayout:jar</include>
 				<include>net.sf.opencsv:opencsv:jar</include>
 				<include>log4j:log4j:jar</include>
+				
+				
+
 
 	        	<include>org.jogamp.gluegen:gluegen-rt:jar</include>
 				<include>org.jogamp.gluegen:gluegen-rt:jar:natives-macosx-universal</include>
@@ -80,7 +92,7 @@
 				<include>org.jogamp.jogl:jogl-all:jar:natives-solaris-amd64</include>
 				<include>org.jogamp.jogl:jogl-all:jar:natives-solaris-i586</include>
 				<include>org.jogamp.jogl:jogl-all:jar:natives-windows-amd64</include>
-				<include>org.jogamp.jogl:jogl-all:jar:natives-windows-i586</include> -->
+				<include>org.jogamp.jogl:jogl-all:jar:natives-windows-i586</include> 
 				<!--
 				[INFO] Excluding org.jogamp.gluegen:gluegen-rt:jar:natives-android-armv6:2.1.5-01 from the shaded jar.
 				[INFO] Excluding org.jogamp.jogl:jogl-all:jar:natives-android-armv6:2.1.5-01 from the shaded jar.
