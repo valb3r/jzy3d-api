@@ -42,10 +42,15 @@
 		<dependencySet>
 			<outputDirectory>lib</outputDirectory>
 	        <includes>
+ 
+  				<include>org.jzy3d:jzy3d-logarithm:jar</include>
+ 				<include>org.jzy3d:jzy3d-dual-axe:jar</include>
+ 
 <!-- 	        	<include>org.jogamp.gluegen:gluegen-rt-main</include>
 	        	<include>org.jogamp.jogl:jogl-all-main</include>
  -->
- 				<include>org.jzy3d:jzy3d-api:jar</include>
+ 
+ 				<!-- <include>org.jzy3d:jzy3d-api:jar</include>
  				<include>org.jzy3d:jzy3d-jdt-core:jar</include>
  				<include>org.jzy3d:jzy3d-depthpeeling:jar</include>
  				
@@ -75,7 +80,7 @@
 				<include>org.jogamp.jogl:jogl-all:jar:natives-solaris-amd64</include>
 				<include>org.jogamp.jogl:jogl-all:jar:natives-solaris-i586</include>
 				<include>org.jogamp.jogl:jogl-all:jar:natives-windows-amd64</include>
-				<include>org.jogamp.jogl:jogl-all:jar:natives-windows-i586</include>
+				<include>org.jogamp.jogl:jogl-all:jar:natives-windows-i586</include> -->
 				<!--
 				[INFO] Excluding org.jogamp.gluegen:gluegen-rt:jar:natives-android-armv6:2.1.5-01 from the shaded jar.
 				[INFO] Excluding org.jogamp.jogl:jogl-all:jar:natives-android-armv6:2.1.5-01 from the shaded jar.

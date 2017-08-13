@@ -19,4 +19,7 @@ mercredi 9 aout : 14h45 - 17h45 - 3h
                   21h00 - 21h30 - 30 min logarithm extract
                   
                   
-                  
+vendredi 11 aout : 2h working 
+samedi 12 aout : 1h cleanup and comment LogView and View
+
+dimanche 13 aout : 13h40 14h30 - 1h continue cleaning main API

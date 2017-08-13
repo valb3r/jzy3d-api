@@ -32,6 +32,11 @@
 			<artifactId>jzy3d-dual-axe</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jzy3d</groupId>
+			<artifactId>jzy3d-logarithm</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
 
 
 		<dependency>
