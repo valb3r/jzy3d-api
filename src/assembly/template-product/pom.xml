@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jzy3d</groupId>
-	<artifactId>jzy3d-polar</artifactId>
+	<artifactId>thermocalc-chart3d-sdk</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
 	<name>Jzy3d Polar</name>
 
@@ -13,6 +13,8 @@
 	</properties>
 
 	<dependencies>
+
+
 		<dependency>
 			<groupId>org.jzy3d</groupId>
 			<artifactId>jzy3d-api</artifactId>
@@ -20,6 +22,16 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/jzy3d-api-1.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
+
+		<dependency>
+			<groupId>org.jzy3d</groupId>
+			<artifactId>jzy3d-jdt-core</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/jzy3d-jdt-core-1.0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.jzy3d</groupId>
 			<artifactId>jzy3d-dual-axe</artifactId>
@@ -82,14 +94,14 @@
 			<!--<scope>test</scope> do not limit scope to test as the lib embbed Replay,
 				i.e. tools to ease non regression tests for interactive features -->
 		</dependency>
-		
-		<dependency>
+
+		<!--<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 			<type>jar</type>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

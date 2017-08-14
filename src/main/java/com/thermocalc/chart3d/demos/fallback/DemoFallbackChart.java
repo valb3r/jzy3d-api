@@ -1,12 +1,10 @@
-package com.thermocalc.chart3d.demos;
+package com.thermocalc.chart3d.demos.fallback;
 import org.jzy3d.chart.AWTChart;
-import org.jzy3d.colors.Color;
-import org.jzy3d.colors.ColorMapper;
 import org.jzy3d.colors.colormaps.ColorMapRainbow;
 import org.jzy3d.maths.Range;
-import org.jzy3d.plot3d.builder.Builder;
 import org.jzy3d.plot3d.builder.Mapper;
 import org.jzy3d.plot3d.primitives.Shape;
+import org.jzy3d.plot3d.primitives.Surface;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
 
 import com.thermocalc.chart3d.fallback.FallbackChart;
@@ -53,10 +51,7 @@ public class DemoFallbackChart {
         int steps = 80;
 
         // Create the object to represent the function over the given range.
-        final Shape surface = Builder.buildOrthonormal(mapper, range, steps);
-        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new Color(1, 1, 1, .5f)));
-        surface.setFaceDisplayed(true);
-        surface.setWireframeDisplayed(false);
+        Shape surface = Surface.shape(mapper, range, steps, new ColorMapRainbow(), .5f);
 
         // -------------------------------
         // Create a chart

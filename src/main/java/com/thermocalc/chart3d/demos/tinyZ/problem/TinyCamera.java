@@ -1,4 +1,4 @@
-package com.thermocalc.chart3d.demos.tinyZpb;
+package com.thermocalc.chart3d.demos.tinyZ.problem;
 
 import java.util.Arrays;
 

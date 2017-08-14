@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.jzy3d.io.FileDataset;
 import org.jzy3d.maths.Coord3d;
 
-import com.thermocalc.chart3d.tinyAxes.Normalizer;
 import com.thermocalc.chart3d.tinyAxes.Normalizer.Model;
 
 public class TestNormalizer {

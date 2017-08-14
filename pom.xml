@@ -42,7 +42,7 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.16</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout</artifactId>
@@ -98,7 +98,7 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<!-- <archive> <manifest> <mainClass>com.jzy3d.surfedit.DemoTableMapping</mainClass> 
+							<!-- <archive> <manifest> <mainClass>com.jzy3d.surfedit.DemoTableMapping</mainClass>
 								</manifest> </archive> -->
 							<descriptors>
 								<descriptor>src/assembly/product.xml</descriptor>
@@ -141,10 +141,12 @@
 					<!-- <settingsFile>src/it/settings.xml</settingsFile> -->
 					<cloneProjectsTo>${project.build.directory}/verify-product-clone/</cloneProjectsTo>
 					<projectsDirectory>${project.build.directory}/verify-product-unzip/</projectsDirectory>
-					<localRepositoryPath>${project.build.directory}/verify-product-local-repo</localRepositoryPath>
+
+					<!-- UNCOMMENT FOLLOWING LINE TO FORCE USING AN EMPTY MAVEN REPO LOCALLY -->
+					<!--<localRepositoryPath>${project.build.directory}/verify-product-local-repo</localRepositoryPath>-->
 
 					<pomIncludes>
-						<pomInclude>${project.artifactId}-${project.version}/pom.xml</pomInclude>
+						<pomInclude>${project.artifactId}-sdk-${project.version}/pom.xml</pomInclude>
 						<!-- <pomInclude>*/pom.xml</pomInclude> -->
 					</pomIncludes>
 					<!-- <postBuildHookScript>verify</postBuildHookScript> -->
@@ -160,7 +162,7 @@
 							<goal>run</goal><!-- equivalent integration-test+verify -->
 							<!-- <goal>integration-test</goal> -->
 							<goal>verify</goal>
-							<!-- verify forces build to fail if running MVN on the generated project 
+							<!-- verify forces build to fail if running MVN on the generated project
 								fails -->
 						</goals>
 					</execution>

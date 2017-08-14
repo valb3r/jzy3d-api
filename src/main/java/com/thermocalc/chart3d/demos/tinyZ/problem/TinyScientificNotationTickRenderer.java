@@ -1,4 +1,4 @@
-package com.thermocalc.chart3d.demos.tinyZpb;
+package com.thermocalc.chart3d.demos.tinyZ.problem;
 
 import org.jzy3d.maths.Utils;
 import org.jzy3d.plot3d.primitives.axes.layout.renderers.ScientificNotationTickRenderer;

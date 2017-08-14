@@ -1,4 +1,4 @@
-package com.thermocalc.chart3d.demos;
+package com.thermocalc.chart3d.demos.tinyZ;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,36 +7,36 @@ import java.util.logging.Logger;
 
 import org.jzy3d.analysis.AbstractAnalysis;
 import org.jzy3d.analysis.AnalysisLauncher;
-import org.jzy3d.chart.factories.AWTChartComponentFactory;
 import org.jzy3d.chart.factories.IChartComponentFactory;
 import org.jzy3d.chart.factories.IChartComponentFactory.Toolkit;
 import org.jzy3d.colors.Color;
 import org.jzy3d.colors.ColorMapper;
 import org.jzy3d.colors.colormaps.ColorMapRainbow;
 import org.jzy3d.io.FileDataset;
+import org.jzy3d.logarithm.chart.LogChartComponentFactory;
 import org.jzy3d.maths.Coord3d;
 import org.jzy3d.maths.Utils;
 import org.jzy3d.plot3d.builder.Builder;
 import org.jzy3d.plot3d.primitives.Shape;
-import org.jzy3d.plot3d.primitives.axes.AxeBox;
 import org.jzy3d.plot3d.primitives.axes.layout.renderers.ScientificNotationTickRenderer;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
-import org.jzy3d.plot3d.rendering.view.ViewportMode;
 import org.jzy3d.plot3d.transform.space.SpaceTransformLog;
 import org.jzy3d.plot3d.transform.space.SpaceTransformer;
 
 import com.thermocalc.chart3d.tinyAxes.Normalizer;
 
-public class DemoLogChart_NOTREADY extends AbstractAnalysis {
+public class DemoTinyAxesLog_NOTREADY extends AbstractAnalysis {
 
     public static void main(String[] args) throws Exception {
-        AnalysisLauncher.open(new DemoLogChart_NOTREADY());
+        AnalysisLauncher.open(new DemoTinyAxesLog_NOTREADY());
     }
 
     @Override
     public void init() {
         try {
-            IChartComponentFactory f = new AWTChartComponentFactory();
+            SpaceTransformer logSpace = new SpaceTransformer(null, null, new SpaceTransformLog());
+
+            IChartComponentFactory f = new LogChartComponentFactory(logSpace);
             
             List<Coord3d> coords = FileDataset.loadList("data/thermocalc-sample.csv");
             
@@ -55,11 +55,11 @@ public class DemoLogChart_NOTREADY extends AbstractAnalysis {
             // Make chart
             Quality quality = new Quality(true, true, true, true, false, false, true);
             chart = f.newChart(quality, Toolkit.awt);
-            chart.getScene().getGraph().add(surfaces);
-            chart.getView().getCamera().setViewportMode(ViewportMode.RECTANGLE_NO_STRETCH);
+            chart.add(surfaces);
+            //chart.getView().getCamera().setViewportMode(ViewportMode.RECTANGLE_NO_STRETCH);
             chart.addMouseCameraController();
-            float[] s = {1.0f, 1.0f};
-            chart.getCanvas().setPixelScale(s);
+            //float[] s = {1.0f, 1.0f};
+            //chart.getCanvas().setPixelScale(s);
 
             // Use a specific tick renderer able to unnormalize
             chart.getAxeLayout().setZTickRenderer( new ScientificNotationTickRendererNormalized(m, 2));   
@@ -68,13 +68,12 @@ public class DemoLogChart_NOTREADY extends AbstractAnalysis {
             // ------------------------
             // Apply log - See TrialLogChart
             
-            SpaceTransformer logTrfrm = new SpaceTransformer(null, null, new SpaceTransformLog());
-            surfaces.setSpaceTransformer(logTrfrm);
+            /*surfaces.setSpaceTransformer(logTrfrm);
             ((AxeBox)chart.getView().getAxe()).setSpaceTransformer(logTrfrm);
-            chart.getView().setSpaceTransformer(logTrfrm);
+            chart.getView().setSpaceTransformer(logTrfrm);*/
             
         } catch (IOException ex) {
-            Logger.getLogger(DemoLogChart_NOTREADY.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DemoTinyAxesLog_NOTREADY.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

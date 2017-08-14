@@ -1,4 +1,4 @@
-package com.thermocalc.chart3d.demos;
+package com.thermocalc.chart3d.demos.tinyZ;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,14 +11,12 @@ import org.jzy3d.chart.factories.AWTChartComponentFactory;
 import org.jzy3d.chart.factories.IChartComponentFactory;
 import org.jzy3d.chart.factories.IChartComponentFactory.Toolkit;
 import org.jzy3d.colors.Color;
-import org.jzy3d.colors.ColorMapper;
 import org.jzy3d.colors.colormaps.ColorMapRainbow;
 import org.jzy3d.io.FileDataset;
 import org.jzy3d.maths.Coord3d;
-import org.jzy3d.plot3d.builder.Builder;
 import org.jzy3d.plot3d.primitives.Shape;
+import org.jzy3d.plot3d.primitives.Surface;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
-import org.jzy3d.plot3d.rendering.view.ViewportMode;
 
 import com.thermocalc.chart3d.tinyAxes.DefaultDecimalTickRendererNormalized;
 import com.thermocalc.chart3d.tinyAxes.Normalizer;
@@ -53,13 +51,11 @@ public class DemoTinyAxes extends AbstractAnalysis {
             List<Coord3d> coords = FileDataset.loadList("data/thermocalc-sample.csv", 0, 1, 2);
 
             // The trick is here : NORMALIZING to avoid very small Z values
-            Model normaliz = Normalizer.normalize(coords);
+            Model normalizer = Normalizer.normalize(coords);
 
             // -------------------------
             // Make shape
-            final Shape surfaces = (Shape) Builder.buildDelaunay(coords);
-            surfaces.setColorMapper(new ColorMapper(new ColorMapRainbow(), surfaces.getBounds().getZmin(), surfaces.getBounds().getZmax(), new Color(1, 1, 1, .5f)));
-            surfaces.setFaceDisplayed(true);
+            Shape surfaces = Surface.shape(coords, new ColorMapRainbow(), .5f);
             surfaces.setWireframeDisplayed(true);
             surfaces.setWireframeColor(Color.BLACK);
 
@@ -67,17 +63,14 @@ public class DemoTinyAxes extends AbstractAnalysis {
             // Make chart
             Quality quality = new Quality(true, true, true, true, false, false, true);
             chart = f.newChart(quality, Toolkit.awt);
-            chart.getScene().getGraph().add(surfaces);
-            chart.getView().getCamera().setViewportMode(ViewportMode.RECTANGLE_NO_STRETCH);
+            chart.add(surfaces);
             chart.addMouseCameraController();
-            float[] s = { 1.0f, 1.0f };
-            chart.getCanvas().setPixelScale(s);
 
             // -------------------------
             // Use a specific tick renderer able to UNNORMALIZE
-            chart.getAxeLayout().setXTickRenderer(new DefaultDecimalTickRendererNormalized(normaliz, Axis.X, 4));
-            chart.getAxeLayout().setYTickRenderer(new DefaultDecimalTickRendererNormalized(normaliz, Axis.Y, 4));
-            chart.getAxeLayout().setZTickRenderer(new DefaultDecimalTickRendererNormalized(normaliz, Axis.Z, 4));
+            chart.getAxeLayout().setXTickRenderer(new DefaultDecimalTickRendererNormalized(normalizer, Axis.X, 4));
+            chart.getAxeLayout().setYTickRenderer(new DefaultDecimalTickRendererNormalized(normalizer, Axis.Y, 4));
+            chart.getAxeLayout().setZTickRenderer(new DefaultDecimalTickRendererNormalized(normalizer, Axis.Z, 4));
 
             // -------------------------
             chart.getView().updateBounds();

@@ -1,4 +1,4 @@
-package com.thermocalc.chart3d.demos;
+package com.thermocalc.chart3d.demos.dualaxe;
 
 import org.jzy3d.analysis.AbstractAnalysis;
 import org.jzy3d.analysis.AnalysisLauncher;
