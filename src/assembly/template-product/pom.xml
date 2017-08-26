@@ -5,12 +5,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jzy3d</groupId>
 	<artifactId>thermocalc-chart3d-sdk</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>Jzy3d Polar</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.jzy3d>${project.version}</version.jzy3d>
+
 	</properties>
+
+
 
 	<dependencies>
 
@@ -18,7 +22,8 @@
 		<dependency>
 			<groupId>org.jzy3d</groupId>
 			<artifactId>jzy3d-api</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${version.jzy3d}</version>
+
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/jzy3d-api-1.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
@@ -26,7 +31,8 @@
 		<dependency>
 			<groupId>org.jzy3d</groupId>
 			<artifactId>jzy3d-jdt-core</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${version.jzy3d}</version>
+
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/jzy3d-jdt-core-1.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
@@ -35,14 +41,16 @@
 		<dependency>
 			<groupId>org.jzy3d</groupId>
 			<artifactId>jzy3d-dual-axe</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${version.jzy3d}</version>
+
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/jzy3d-dual-axe-1.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.jzy3d</groupId>
 			<artifactId>jzy3d-logarithm</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>${version.jzy3d}</version>
+
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/jzy3d-logarithm-1.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>

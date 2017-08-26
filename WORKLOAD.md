@@ -1,12 +1,12 @@
 # Workload 
 
 ## DualAxe Chart
-samedi 17 juin     : 2h init factory and base objects
-dimanche 18 juin   :
-vendredi 23 juin   : 3h train fix rendering of double scene
-dimanche 2 juillet : 18h-18h20 setup project
-=====================
-                  6h
+samedi 17 juin     : 2h  - init factory and base objects
+dimanche 18 juin   : ?
+vendredi 23 juin   : 3h  - train fix rendering of double scene
+dimanche 2 juillet : 20' - 18h-18h20 setup project
+=======================
+                     6h
 
 ## Fixing Miglayout and Tiny values
 
@@ -14,9 +14,8 @@ mardi 1 août    : 2h - fallback chart
 vendredi 4 aout : 2h - fallback chart on miglayout, debugging ticks for tiny charts.
 samedi 5 aout   : 3h - normalizer Z
 mercredi 9 août : 1h - normalizer All dimensions
-+ gestion projet: 1h - web page to checkout)
 =====================
-                  9h
+                  8h
 
 ## Log charts
 
@@ -31,6 +30,12 @@ dimanche 13 aout : 1h   - 13h40 14h30 continue cleaning main API
 ## Packaging and release tests
 
 dimanche 13 aout : 20h00 21h00 - packaging
-lundi 14 aout    : 7h45 8h30 - packaging verif
+lundi 14 aout    : 7h45 8h45 - packaging verif
 =====================
-                   7h
+                   2h
+                   
+                   
+-------------------------------------
+LOT 1 : 23H x 125€ = 2875€
+-------------------------------------                 
+
