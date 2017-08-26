@@ -7,7 +7,7 @@
 	<name>Thermocalc 3d Charts</name>
 
 	<scm>
-	<connection>scm:git:https://github.com/jzy3d/jzy3d-api</connection>
+	<connection>scm:git:https://github.com/jzy3d/thermocalc-chart3d</connection>
 		<tag>thermocalc-chart3d-1.0.1</tag>
 	</scm>
 
