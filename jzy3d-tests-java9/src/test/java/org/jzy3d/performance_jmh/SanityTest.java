@@ -31,6 +31,16 @@ public class SanityTest {
     }
   }
 
+  @Test
+  public void testMatrixInversion() {
+    for (int i = 0; i < 100; ++i) {
+      MatrixProvider prov = new MatrixProvider();
+      float[] oldR = gl_util.inverseMatrix44(prov.getFirstMatrix());
+      float[] newR = gl_util_new.inverseMatrix44(prov.getFirstMatrix());
+      assertThat(oldR, Matchers.equalTo(newR));
+    }
+  }
+
   public static class MatrixProvider {
     private float[] firstMatrix;
     private float[] secondMatrix;

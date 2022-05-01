@@ -14,14 +14,15 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-public class MatrixMultiplication {
+public class MatrixInversion {
 
   public static void main(String[] args) throws Exception {
     Options opt = new OptionsBuilder()
-        .include(MatrixMultiplication.class.getSimpleName())
+        .include(MatrixInversion.class.getSimpleName())
+        .exclude("(.+MatrixMultiplication)|(.+MatrixVectorMultiplication)")
         .mode(Mode.AverageTime)
         .forks(2)
-        .warmupIterations(10)
+        .warmupIterations(2)
         .measurementIterations(10)
         .timeUnit(TimeUnit.MICROSECONDS)
         .build();
@@ -30,21 +31,13 @@ public class MatrixMultiplication {
   }
 
   @Benchmark
-  public Object homemadeOldMatrixMultiplication(MatrixProvider matrixProvider) {
-    return gl_util.mulMatrix44(matrixProvider.getFirstMatrix(), matrixProvider.getSecondMatrix());
+  public Object homemadeOldMatrixInversion(MatrixProvider matrixProvider) {
+    return gl_util.inverseMatrix44(matrixProvider.getFirstMatrix());
   }
 
   @Benchmark
-  public Object homemadeNewMatrixMultiplication(MatrixProvider matrixProvider) {
-    return gl_util_new.mulMatrix44(matrixProvider.getFirstMatrix(), matrixProvider.getSecondMatrix());
-  }
-
-  @Benchmark
-  public Object ejmlMatrixMultiplication(MatrixProvider matrixProvider) {
-    SimpleMatrix firstMatrix = new SimpleMatrix(4, 4, true, matrixProvider.getFirstMatrix());
-    SimpleMatrix secondMatrix = new SimpleMatrix(4, 4, true, matrixProvider.getSecondMatrix());
-
-    return firstMatrix.mult(secondMatrix);
+  public Object homemadeNewMatrixInversion(MatrixProvider matrixProvider) {
+    return gl_util_new.inverseMatrix44(matrixProvider.getFirstMatrix());
   }
 
   @State(Scope.Benchmark)

@@ -191,14 +191,28 @@ public final class gl_util_new {
     float m[] = adjoint44(a);
     float det = det44(m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10], m[11],
         m[12], m[13], m[14], m[15]);
-    int i;
-    if (det != 0) {
-      for (i = 0; i < 16; i++) {
-        m[i] /= det;
-      }
-      return m;
+    if (det == 0) {
+      return null;
     }
-    return null;
+
+    m[0] /= det;
+    m[1] /= det;
+    m[2] /= det;
+    m[3] /= det;
+    m[4] /= det;
+    m[5] /= det;
+    m[6] /= det;
+    m[7] /= det;
+    m[8] /= det;
+    m[9] /= det;
+    m[10] /= det;
+    m[11] /= det;
+    m[12] /= det;
+    m[13] /= det;
+    m[14] /= det;
+    m[15] /= det;
+
+    return m;
   }
 
   public static float dot33(float a[], float b[]) {
