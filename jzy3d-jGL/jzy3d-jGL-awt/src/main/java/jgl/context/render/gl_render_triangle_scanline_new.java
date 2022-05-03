@@ -5,7 +5,7 @@ import jgl.context.gl_context;
 import jgl.context.gl_vertex;
 import jgl.context.render.pixel.gl_render_pixel;
 
-public class gl_render_triangle_scanline_orig {
+public class gl_render_triangle_scanline_new {
 
   protected gl_context CC;
   protected gl_render_pixel pixel;
@@ -120,20 +120,20 @@ public class gl_render_triangle_scanline_orig {
    * Draw a flat horizontal line in the Color Buffer, assume that x1 is in the left side of x2
    */
   protected void draw_horizontal_line() {
-    if (LineXY[1][0] == LineXY[0][0]) {
+    int dx = LineXY[1][0] - LineXY[0][0];
+
+    if (dx == 0) {
       put_pixel();
       return;
     }
 
-    int index = CC.Viewport.Width * LineXY[0][1];
-    int RightPoint = LineXY[1][0] + index;
-    x = LineXY[0][0] + index;
+    int RightPoint = LineXY[1][0] + CC.Viewport.Width * LineXY[0][1];
+
+    x = LineXY[0][0] + CC.Viewport.Width * LineXY[0][1];
 
     while (x <= RightPoint) {
-//      put_pixel_by_index();
-//      inc_x();
-      pixel.put_pixel_by_index(x, color);
-      ++x;
+      put_pixel_by_index();
+      inc_x();
     }
   }
 
@@ -555,7 +555,7 @@ public class gl_render_triangle_scanline_orig {
     pixel = p;
   }
 
-  public gl_render_triangle_scanline_orig(gl_context cc) {
+  public gl_render_triangle_scanline_new(gl_context cc) {
     CC = cc;
   }
 

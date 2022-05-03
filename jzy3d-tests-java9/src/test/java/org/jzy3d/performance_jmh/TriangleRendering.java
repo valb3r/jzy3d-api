@@ -3,6 +3,7 @@ package org.jzy3d.performance_jmh;
 import jgl.context.gl_context;
 import jgl.context.gl_vertex;
 import jgl.context.render.gl_render_triangle_barycentric;
+import jgl.context.render.gl_render_triangle_scanline_new;
 import jgl.context.render.gl_render_triangle_scanline_orig;
 import jgl.context.render.pixel.gl_render_pixel;
 import org.junit.Test;
@@ -53,8 +54,8 @@ public class TriangleRendering {
         .include(TriangleRendering.class.getSimpleName())
         .mode(Mode.AverageTime)
         .forks(2)
-        .warmupIterations(1)
-        .measurementIterations(1)
+        .warmupIterations(3)
+        .measurementIterations(3)
         .timeUnit(TimeUnit.NANOSECONDS)
         .build();
 
@@ -64,6 +65,16 @@ public class TriangleRendering {
   @Benchmark
   public Object scanlineOriginalRender(TrianglesProvider provider) {
     provider.render_triangle_scanline_orig.draw_triangle(
+        provider.getTriangles()[0],
+        provider.getTriangles()[1],
+        provider.getTriangles()[2]
+    );
+    return provider.context.ColorBuffer;
+  }
+
+  @Benchmark
+  public Object scanlineNewRender(TrianglesProvider provider) {
+    provider.render_triangle_scanline_new.draw_triangle(
         provider.getTriangles()[0],
         provider.getTriangles()[1],
         provider.getTriangles()[2]
@@ -129,6 +140,7 @@ public class TriangleRendering {
 
     private gl_context context = new gl_context();
     private gl_render_triangle_scanline_orig render_triangle_scanline_orig = new gl_render_triangle_scanline_orig(context);
+    private gl_render_triangle_scanline_new render_triangle_scanline_new = new gl_render_triangle_scanline_new(context);
     private gl_render_triangle_barycentric render_triangle_barycentric = new gl_render_triangle_barycentric(context);
 
     public TrianglesProvider() {
@@ -136,8 +148,10 @@ public class TriangleRendering {
       context.gl_front_face(40);
       context.gl_color(0.4f, 0.3f, 0.1f, 0.5f);
       render_triangle_scanline_orig.set_pixel(new gl_render_pixel(context));
+      render_triangle_scanline_new.set_pixel(new gl_render_pixel(context));
       render_triangle_barycentric.set_pixel(new gl_render_pixel(context));
       render_triangle_scanline_orig.color = 99;
+      render_triangle_scanline_new.color = 99;
       render_triangle_barycentric.color = 99;
     }
 
