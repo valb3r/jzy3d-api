@@ -54,8 +54,8 @@ public class TriangleRendering {
         .include(TriangleRendering.class.getSimpleName())
         .mode(Mode.AverageTime)
         .forks(2)
-        .warmupIterations(3)
-        .measurementIterations(3)
+        .warmupIterations(10)
+        .measurementIterations(10)
         .timeUnit(TimeUnit.NANOSECONDS)
         .build();
 
@@ -82,7 +82,7 @@ public class TriangleRendering {
     return provider.context.ColorBuffer;
   }
 
-  @Benchmark
+  //@Benchmark
   public Object barycentricRender(TrianglesProvider provider) {
     provider.render_triangle_barycentric.draw_triangle(
         provider.getTriangles()[0],

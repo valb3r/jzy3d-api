@@ -116,24 +116,53 @@ public class gl_render_triangle_scanline_new {
     draw_horizontal_line();
   }
 
+  protected void draw_horizontal_line_indexed(int x1, int x2, int y, int rowIndex) {
+    this.LineXY[0][0] = x1;
+    this.LineXY[1][0] = x2;
+    this.LineXY[0][1] = y;
+    set_first_point();
+    draw_horizontal_line_with_index(rowIndex);
+  }
+
   /**
    * Draw a flat horizontal line in the Color Buffer, assume that x1 is in the left side of x2
    */
   protected void draw_horizontal_line() {
-    int dx = LineXY[1][0] - LineXY[0][0];
+//    int dx = LineXY[1][0] - LineXY[0][0];
+//
+//    if (dx == 0) {
+//      put_pixel();
+//      return;
+//    }
 
-    if (dx == 0) {
-      put_pixel();
-      return;
-    }
-
-    int RightPoint = LineXY[1][0] + CC.Viewport.Width * LineXY[0][1];
-
-    x = LineXY[0][0] + CC.Viewport.Width * LineXY[0][1];
+    int imageRowIndex = CC.Viewport.Width * LineXY[0][1];
+    int RightPoint = LineXY[1][0] + imageRowIndex;
+    x = LineXY[0][0] + imageRowIndex;
 
     while (x <= RightPoint) {
-      put_pixel_by_index();
-      inc_x();
+//      put_pixel_by_index();
+//      inc_x();
+      pixel.put_pixel_by_index(x, color);
+      ++x;
+    }
+  }
+
+  protected void draw_horizontal_line_with_index(int imageRowIndex) {
+//    int dx = LineXY[1][0] - LineXY[0][0];
+//
+//    if (dx == 0) {
+//      put_pixel();
+//      return;
+//    }
+
+    int RightPoint = LineXY[1][0] + imageRowIndex;
+    x = LineXY[0][0] + imageRowIndex;
+
+    while (x <= RightPoint) {
+//      put_pixel_by_index();
+//      inc_x();
+      pixel.put_pixel_by_index(x, color);
+      ++x;
     }
   }
 
@@ -381,6 +410,10 @@ public class gl_render_triangle_scanline_new {
     draw_horizontal_line(LeftPoint, RightPoint, y);
   }
 
+  protected void draw_horizontal_line_indexed(int y, int rowIndex) {
+    draw_horizontal_line_indexed(LeftPoint, RightPoint, y, rowIndex);
+  }
+
   /*
    * protected void draw_point (int v) { CC.CR.pixel.put_pixel (TriXY[v][0], TriXY[v][1], color); }
    */
@@ -521,11 +554,13 @@ public class gl_render_triangle_scanline_new {
     set_left(Top);
     set_right(Top);
 
+    int imageRowIndex = CC.Viewport.Width * TriXY[Top][1];
     // Draw the upper part of the triangle....
     for (i = TriXY[Top][1]; i < TriXY[Mid][1]; i++) {
-      draw_horizontal_line(i);
+      draw_horizontal_line_indexed(i, imageRowIndex);
       inc_left();
       inc_right();
+      imageRowIndex += CC.Viewport.Width;
     }
 
     if (Mid == Right) {
@@ -541,10 +576,12 @@ public class gl_render_triangle_scanline_new {
     }
 
     // Draw the lower part of the triangle....
+    imageRowIndex = CC.Viewport.Width * TriXY[Mid][1];
     for (i = TriXY[Mid][1]; i < TriXY[Down][1]; i++) {
-      draw_horizontal_line(i);
+      draw_horizontal_line_indexed(i, imageRowIndex);
       inc_left();
       inc_right();
+      imageRowIndex += CC.Viewport.Width;
     }
 
     // Draw the lowest line of the triangle....
