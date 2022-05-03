@@ -20,13 +20,16 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * TriangleRendering.scanlineNewRender            avgt   20  201.266 ± 1.415  ns/op
- * TriangleRendering.scanlineNewRenderLarge       avgt   20  414.168 ± 5.342  ns/op
- * TriangleRendering.scanlineNewRenderSmall       avgt   20   32.353 ± 0.667  ns/op
- * TriangleRendering.scanlineOriginalRender       avgt   20  217.217 ± 2.735  ns/op
- * TriangleRendering.scanlineOriginalRenderLarge  avgt   20  449.780 ± 8.264  ns/op
- * TriangleRendering.scanlineOriginalRenderMicro  avgt   20   19.150 ± 1.514  ns/op
- * TriangleRendering.scanlineOriginalRenderSmall  avgt   20   29.586 ± 0.134  ns/op
+ TriangleRendering.barycentricRender            avgt   20  570.185 ± 24.908  ns/op
+ TriangleRendering.scanlineNewRender            avgt   20  222.479 ±  3.718  ns/op
+ TriangleRendering.scanlineNewRenderLarge       avgt   20  456.733 ± 20.367  ns/op
+ TriangleRendering.scanlineNewRenderMicro       avgt   20   18.085 ±  0.520  ns/op
+ TriangleRendering.scanlineNewRenderSmall       avgt   20   30.262 ±  0.284  ns/op
+ TriangleRendering.scanlineOriginalRender       avgt   20  210.860 ±  3.515  ns/op
+ TriangleRendering.scanlineOriginalRenderLarge  avgt   20  481.984 ± 58.194  ns/op
+ TriangleRendering.scanlineOriginalRenderMicro  avgt   20   21.277 ±  0.981  ns/op
+ TriangleRendering.scanlineOriginalRenderSmall  avgt   20   30.937 ±  2.947  ns/op
+
  */
 public class TriangleRendering {
   private static final gl_vertex[] trianglesMicro = createTriangleMicro();
@@ -133,6 +136,7 @@ public class TriangleRendering {
   public static void main(String[] args) throws Exception {
     Options opt = new OptionsBuilder()
         .include(TriangleRendering.class.getSimpleName())
+        .exclude("Line.*")
         .mode(Mode.AverageTime)
         .forks(2)
         .warmupIterations(10)
