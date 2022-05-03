@@ -5,7 +5,7 @@ import jgl.context.gl_context;
 import jgl.context.gl_vertex;
 import jgl.context.render.pixel.gl_render_pixel;
 
-public class gl_render_triangle_old {
+public class gl_render_triangle_scanline_orig {
 
   protected gl_context CC;
   protected gl_render_pixel pixel;
@@ -555,7 +555,7 @@ public class gl_render_triangle_old {
     pixel = p;
   }
 
-  public gl_render_triangle_old(gl_context cc) {
+  public gl_render_triangle_scanline_orig(gl_context cc) {
     CC = cc;
   }
 

@@ -3,7 +3,7 @@ package org.jzy3d.performance_jmh;
 import jgl.context.gl_context;
 import jgl.context.gl_vertex;
 import jgl.context.render.gl_render_triangle_barycentric;
-import jgl.context.render.gl_render_triangle_old;
+import jgl.context.render.gl_render_triangle_scanline_orig;
 import jgl.context.render.pixel.gl_render_pixel;
 import org.junit.Test;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -62,8 +62,8 @@ public class TriangleRendering {
   }
 
   @Benchmark
-  public Object homemadeOldMatrixMultiplication(TrianglesProvider provider) {
-    provider.render_triangle_old.draw_triangle(
+  public Object scanlineOriginalRender(TrianglesProvider provider) {
+    provider.render_triangle_scanline_orig.draw_triangle(
         provider.getTriangles()[0],
         provider.getTriangles()[1],
         provider.getTriangles()[2]
@@ -72,8 +72,8 @@ public class TriangleRendering {
   }
 
   @Benchmark
-  public Object homemadeNewMatrixMultiplication(TrianglesProvider provider) {
-    provider.render_triangle_new.draw_triangle(
+  public Object barycentricRender(TrianglesProvider provider) {
+    provider.render_triangle_barycentric.draw_triangle(
         provider.getTriangles()[0],
         provider.getTriangles()[1],
         provider.getTriangles()[2]
@@ -88,7 +88,7 @@ public class TriangleRendering {
     clearBuff(provider);
     long stOld = System.nanoTime();
     for (int i = 0; i < iterCount; ++i) {
-      provider.render_triangle_old.draw_triangle(
+      provider.render_triangle_scanline_orig.draw_triangle(
           provider.getTriangles()[0],
           provider.getTriangles()[1],
           provider.getTriangles()[2]
@@ -101,7 +101,7 @@ public class TriangleRendering {
 
     long stNew = System.nanoTime();
     for (int i = 0; i < iterCount; ++i) {
-      provider.render_triangle_new.draw_triangle(
+      provider.render_triangle_barycentric.draw_triangle(
           provider.getTriangles()[0],
           provider.getTriangles()[1],
           provider.getTriangles()[2]
@@ -128,17 +128,17 @@ public class TriangleRendering {
   public static class TrianglesProvider {
 
     private gl_context context = new gl_context();
-    private gl_render_triangle_old render_triangle_old = new gl_render_triangle_old(context);
-    private gl_render_triangle_barycentric render_triangle_new = new gl_render_triangle_barycentric(context);
+    private gl_render_triangle_scanline_orig render_triangle_scanline_orig = new gl_render_triangle_scanline_orig(context);
+    private gl_render_triangle_barycentric render_triangle_barycentric = new gl_render_triangle_barycentric(context);
 
     public TrianglesProvider() {
       context.gl_viewport(0, 0, 1000, 1000);
       context.gl_front_face(40);
       context.gl_color(0.4f, 0.3f, 0.1f, 0.5f);
-      render_triangle_old.set_pixel(new gl_render_pixel(context));
-      render_triangle_new.set_pixel(new gl_render_pixel(context));
-      render_triangle_old.color = 99;
-      render_triangle_new.color = 99;
+      render_triangle_scanline_orig.set_pixel(new gl_render_pixel(context));
+      render_triangle_barycentric.set_pixel(new gl_render_pixel(context));
+      render_triangle_scanline_orig.color = 99;
+      render_triangle_barycentric.color = 99;
     }
 
 
@@ -151,8 +151,8 @@ public class TriangleRendering {
       return context;
     }
 
-    public gl_render_triangle_old getRenderOld() {
-      return render_triangle_old;
+    public gl_render_triangle_scanline_orig getRenderOld() {
+      return render_triangle_scanline_orig;
     }
   }
 }
