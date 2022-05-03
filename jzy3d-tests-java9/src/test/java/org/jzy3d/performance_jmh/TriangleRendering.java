@@ -19,6 +19,15 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * TriangleRendering.scanlineNewRender            avgt   20  201.266 ± 1.415  ns/op
+ * TriangleRendering.scanlineNewRenderLarge       avgt   20  414.168 ± 5.342  ns/op
+ * TriangleRendering.scanlineNewRenderSmall       avgt   20   32.353 ± 0.667  ns/op
+ * TriangleRendering.scanlineOriginalRender       avgt   20  217.217 ± 2.735  ns/op
+ * TriangleRendering.scanlineOriginalRenderLarge  avgt   20  449.780 ± 8.264  ns/op
+ * TriangleRendering.scanlineOriginalRenderMicro  avgt   20   19.150 ± 1.514  ns/op
+ * TriangleRendering.scanlineOriginalRenderSmall  avgt   20   29.586 ± 0.134  ns/op
+ */
 public class TriangleRendering {
   private static final gl_vertex[] trianglesMicro = createTriangleMicro();
   private static final gl_vertex[] trianglesSmall = createTriangleSmall();
@@ -174,6 +183,7 @@ public class TriangleRendering {
     return provider.context.ColorBuffer;
   }
 
+  @Benchmark
   public Object scanlineNewRenderMicro(TrianglesProvider provider) {
     provider.render_triangle_scanline_new.draw_triangle(
         trianglesMicro[0],
@@ -213,7 +223,7 @@ public class TriangleRendering {
     return provider.context.ColorBuffer;
   }
 
-  //@Benchmark
+  @Benchmark
   public Object barycentricRender(TrianglesProvider provider) {
     provider.render_triangle_barycentric.draw_triangle(
         triangles[0],
@@ -243,7 +253,7 @@ public class TriangleRendering {
 
     long stNew = System.nanoTime();
     for (int i = 0; i < iterCount; ++i) {
-      provider.render_triangle_barycentric.draw_triangle(
+      provider.render_triangle_scanline_new.draw_triangle(
           triangles[0],
           triangles[1],
           triangles[2]
