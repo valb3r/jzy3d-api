@@ -20,8 +20,57 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class TriangleRendering {
-  private static final int SPAN = 20;
+  private static final gl_vertex[] trianglesMicro = createTriangleMicro();
+  private static final gl_vertex[] trianglesSmall = createTriangleSmall();
   private static final gl_vertex[] triangles = createTriangle();
+  private static final gl_vertex[] trianglesLarge = createTriangleLarge();
+
+  private static gl_vertex[] createTriangleMicro() {
+    gl_vertex v1 = new gl_vertex();
+    v1.Vertex[0] = 300.0f;
+    v1.Vertex[1] = 500.0f;
+    v1.Vertex[2] = 300.0f;
+
+    gl_vertex v2 = new gl_vertex();
+    v2.Vertex[0] = 301.f;
+    v2.Vertex[1] = 501.0f;
+    v2.Vertex[2] = 310.0f;
+
+    gl_vertex v3 = new gl_vertex();
+    v3.Vertex[0] = 301.0f;
+    v3.Vertex[1] = 500.0f;
+    v3.Vertex[2] = 330.0f;
+
+    gl_vertex[] triangles = new gl_vertex[3];
+    triangles[0] = v1;
+    triangles[1] = v2;
+    triangles[2] = v3;
+    return triangles;
+  }
+
+  private static gl_vertex[] createTriangleSmall() {
+    gl_vertex v1 = new gl_vertex();
+    v1.Vertex[0] = 300.0f;
+    v1.Vertex[1] = 500.0f;
+    v1.Vertex[2] = 300.0f;
+
+    gl_vertex v2 = new gl_vertex();
+    v2.Vertex[0] = 301.f;
+    v2.Vertex[1] = 501.0f;
+    v2.Vertex[2] = 310.0f;
+
+    gl_vertex v3 = new gl_vertex();
+    v3.Vertex[0] = 301.0f;
+    v3.Vertex[1] = 498.0f;
+    v3.Vertex[2] = 330.0f;
+
+    gl_vertex[] triangles = new gl_vertex[3];
+    triangles[0] = v1;
+    triangles[1] = v2;
+    triangles[2] = v3;
+    return triangles;
+  }
+
   private static gl_vertex[] createTriangle() {
     gl_vertex v1 = new gl_vertex();
     v1.Vertex[0] = 300.0f;
@@ -36,6 +85,29 @@ public class TriangleRendering {
     gl_vertex v3 = new gl_vertex();
     v3.Vertex[0] = 320.0f;
     v3.Vertex[1] = 480.0f;
+    v3.Vertex[2] = 330.0f;
+
+    gl_vertex[] triangles = new gl_vertex[3];
+    triangles[0] = v1;
+    triangles[1] = v2;
+    triangles[2] = v3;
+    return triangles;
+  }
+
+  private static gl_vertex[] createTriangleLarge() {
+    gl_vertex v1 = new gl_vertex();
+    v1.Vertex[0] = 300.0f;
+    v1.Vertex[1] = 500.0f;
+    v1.Vertex[2] = 300.0f;
+
+    gl_vertex v2 = new gl_vertex();
+    v2.Vertex[0] = 340.f;
+    v2.Vertex[1] = 540.0f;
+    v2.Vertex[2] = 310.0f;
+
+    gl_vertex v3 = new gl_vertex();
+    v3.Vertex[0] = 340.0f;
+    v3.Vertex[1] = 460.0f;
     v3.Vertex[2] = 330.0f;
 
     gl_vertex[] triangles = new gl_vertex[3];
@@ -63,11 +135,60 @@ public class TriangleRendering {
   }
 
   @Benchmark
+  public Object scanlineOriginalRenderMicro(TrianglesProvider provider) {
+    provider.render_triangle_scanline_orig.draw_triangle(
+        trianglesMicro[0],
+        trianglesMicro[1],
+        trianglesMicro[2]
+    );
+    return provider.context.ColorBuffer;
+  }
+
+  @Benchmark
+  public Object scanlineOriginalRenderSmall(TrianglesProvider provider) {
+    provider.render_triangle_scanline_orig.draw_triangle(
+        trianglesSmall[0],
+        trianglesSmall[1],
+        trianglesSmall[2]
+    );
+    return provider.context.ColorBuffer;
+  }
+
+  @Benchmark
   public Object scanlineOriginalRender(TrianglesProvider provider) {
     provider.render_triangle_scanline_orig.draw_triangle(
-        provider.getTriangles()[0],
-        provider.getTriangles()[1],
-        provider.getTriangles()[2]
+        triangles[0],
+        triangles[1],
+        triangles[2]
+    );
+    return provider.context.ColorBuffer;
+  }
+
+  @Benchmark
+  public Object scanlineOriginalRenderLarge(TrianglesProvider provider) {
+    provider.render_triangle_scanline_orig.draw_triangle(
+        trianglesLarge[0],
+        trianglesLarge[1],
+        trianglesLarge[2]
+    );
+    return provider.context.ColorBuffer;
+  }
+
+  public Object scanlineNewRenderMicro(TrianglesProvider provider) {
+    provider.render_triangle_scanline_new.draw_triangle(
+        trianglesMicro[0],
+        trianglesMicro[1],
+        trianglesMicro[2]
+    );
+    return provider.context.ColorBuffer;
+  }
+
+  @Benchmark
+  public Object scanlineNewRenderSmall(TrianglesProvider provider) {
+    provider.render_triangle_scanline_new.draw_triangle(
+        trianglesSmall[0],
+        trianglesSmall[1],
+        trianglesSmall[2]
     );
     return provider.context.ColorBuffer;
   }
@@ -75,9 +196,19 @@ public class TriangleRendering {
   @Benchmark
   public Object scanlineNewRender(TrianglesProvider provider) {
     provider.render_triangle_scanline_new.draw_triangle(
-        provider.getTriangles()[0],
-        provider.getTriangles()[1],
-        provider.getTriangles()[2]
+        triangles[0],
+        triangles[1],
+        triangles[2]
+    );
+    return provider.context.ColorBuffer;
+  }
+
+  @Benchmark
+  public Object scanlineNewRenderLarge(TrianglesProvider provider) {
+    provider.render_triangle_scanline_new.draw_triangle(
+        trianglesLarge[0],
+        trianglesLarge[1],
+        trianglesLarge[2]
     );
     return provider.context.ColorBuffer;
   }
@@ -85,9 +216,9 @@ public class TriangleRendering {
   //@Benchmark
   public Object barycentricRender(TrianglesProvider provider) {
     provider.render_triangle_barycentric.draw_triangle(
-        provider.getTriangles()[0],
-        provider.getTriangles()[1],
-        provider.getTriangles()[2]
+        triangles[0],
+        triangles[1],
+        triangles[2]
     );
     return provider.context.ColorBuffer;
   }
@@ -100,9 +231,9 @@ public class TriangleRendering {
     long stOld = System.nanoTime();
     for (int i = 0; i < iterCount; ++i) {
       provider.render_triangle_scanline_orig.draw_triangle(
-          provider.getTriangles()[0],
-          provider.getTriangles()[1],
-          provider.getTriangles()[2]
+          triangles[0],
+          triangles[1],
+          triangles[2]
       );
     }
     long enOld = System.nanoTime();
@@ -113,9 +244,9 @@ public class TriangleRendering {
     long stNew = System.nanoTime();
     for (int i = 0; i < iterCount; ++i) {
       provider.render_triangle_barycentric.draw_triangle(
-          provider.getTriangles()[0],
-          provider.getTriangles()[1],
-          provider.getTriangles()[2]
+          triangles[0],
+          triangles[1],
+          triangles[2]
       );
     }
     long enNew = System.nanoTime();
@@ -153,20 +284,6 @@ public class TriangleRendering {
       render_triangle_scanline_orig.set_color(99);
       render_triangle_scanline_new.color = 99;
       render_triangle_barycentric.color = 99;
-    }
-
-
-
-    public gl_vertex[] getTriangles() {
-      return triangles;
-    }
-
-    public gl_context getContext() {
-      return context;
-    }
-
-    public gl_render_triangle_scanline_orig getRenderOld() {
-      return render_triangle_scanline_orig;
     }
   }
 }
