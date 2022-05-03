@@ -1,9 +1,38 @@
+/*
+ * @(#)gl_render.java 0.4 99/11/29
+ *
+ * jGL 3-D graphics library for Java Copyright (c) 1996-1999 Robin Bing-Yu Chen
+ * (robin@is.s.u-tokyo.ac.jp)
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; either version
+ * 2.1 of the License, or any later version. the GNU Lesser General Public License should be
+ * included with this distribution in the file LICENSE.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+
 package jgl.context.render;
 
 import jgl.GL;
 import jgl.context.gl_context;
+import jgl.context.gl_polygon;
 import jgl.context.gl_vertex;
 import jgl.context.render.pixel.gl_render_pixel;
+
+/**
+ * gl_render is the basic rendering class of JavaGL 2.1.
+ *
+ * The most important method is {@link #draw_line(gl_vertex, gl_vertex)} which
+ * paints the pixel between 2 2D points. The third dimension of the vertex represents
+ * the depth of the pixel. Note that considering depth for drawing a pixel is
+ * made in {@link gl_depth} (a subclass of {@link gl_render})
+ *
+ * @version 0.4, 29 Nov 1999
+ * @author Robin Bing-Yu Chen
+ */
 
 public class gl_render_triangle_scanline_orig {
 
@@ -15,7 +44,7 @@ public class gl_render_triangle_scanline_orig {
   protected int x;
   protected int y;
 
-  public int color; // for flat shading
+  protected int color; // for flat shading
 
   protected void init_xy(gl_vertex v1, gl_vertex v2) {
     LineXY[0][0] = (int) (v1.Vertex[0] + (float) 0.5);
@@ -120,20 +149,20 @@ public class gl_render_triangle_scanline_orig {
    * Draw a flat horizontal line in the Color Buffer, assume that x1 is in the left side of x2
    */
   protected void draw_horizontal_line() {
-    if (LineXY[1][0] == LineXY[0][0]) {
+    int dx = LineXY[1][0] - LineXY[0][0];
+
+    if (dx == 0) {
       put_pixel();
       return;
     }
 
-    int index = CC.Viewport.Width * LineXY[0][1];
-    int RightPoint = LineXY[1][0] + index;
-    x = LineXY[0][0] + index;
+    int RightPoint = LineXY[1][0] + CC.Viewport.Width * LineXY[0][1];
+
+    x = LineXY[0][0] + CC.Viewport.Width * LineXY[0][1];
 
     while (x <= RightPoint) {
-//      put_pixel_by_index();
-//      inc_x();
-      pixel.put_pixel_by_index(x, color);
-      ++x;
+      put_pixel_by_index();
+      inc_x();
     }
   }
 
@@ -221,6 +250,12 @@ public class gl_render_triangle_scanline_orig {
     } else { // only for horizontal line
       draw_horizontal_line();
     }
+  }
+
+  /** Draw a flat line in the Color Buffer */
+  public void draw_line(gl_vertex v1, gl_vertex v2, int color) {
+    this.color = color;
+    draw_line(v1, v2);
   }
 
   // Members for Triangle
@@ -549,6 +584,30 @@ public class gl_render_triangle_scanline_orig {
 
     // Draw the lowest line of the triangle....
     draw_horizontal_line(TriXY[Down][1]);
+  }
+
+  public void draw_triangle(gl_vertex v1, gl_vertex v2, gl_vertex v3, int color) {
+    this.color = color;
+    draw_triangle(v1, v2, v3);
+  }
+
+  public void draw_polygon(gl_polygon p) {
+    if (p.n == 0) {
+      return;
+    }
+
+    for (int i = 2; i < p.n; i++) {
+      draw_triangle(p.Polygon[0], p.Polygon[i - 1], p.Polygon[i]);
+    }
+  }
+
+  public void draw_polygon(gl_polygon p, int color) {
+    this.color = color;
+    draw_polygon(p);
+  }
+
+  public void set_color(int color) {
+    this.color = color;
   }
 
   public void set_pixel(gl_render_pixel p) {

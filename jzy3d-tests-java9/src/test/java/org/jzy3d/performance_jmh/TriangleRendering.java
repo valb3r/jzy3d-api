@@ -95,7 +95,7 @@ public class TriangleRendering {
   @Test
   public void testManual() {
     TrianglesProvider provider = new TrianglesProvider();
-    int iterCount = 1000000;
+    int iterCount = 10000000;
     clearBuff(provider);
     long stOld = System.nanoTime();
     for (int i = 0; i < iterCount; ++i) {
@@ -150,7 +150,7 @@ public class TriangleRendering {
       render_triangle_scanline_orig.set_pixel(new gl_render_pixel(context));
       render_triangle_scanline_new.set_pixel(new gl_render_pixel(context));
       render_triangle_barycentric.set_pixel(new gl_render_pixel(context));
-      render_triangle_scanline_orig.color = 99;
+      render_triangle_scanline_orig.set_color(99);
       render_triangle_scanline_new.color = 99;
       render_triangle_barycentric.color = 99;
     }
