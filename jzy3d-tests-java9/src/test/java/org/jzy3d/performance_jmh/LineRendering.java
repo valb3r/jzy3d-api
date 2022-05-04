@@ -12,6 +12,30 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.abs;
 
+/*
+ * Benchmark                          Mode  Cnt   Score    Error  Units
+ * LineRendering.bresenhamHugeLine    avgt    6  59.555 ±  3.252  ns/op
+ * LineRendering.bresenhamLargeLine   avgt    6  19.788 ±  0.624  ns/op
+ * LineRendering.bresenhamMediumLine  avgt    6   8.399 ±  1.088  ns/op
+ * LineRendering.bresenhamMicroLine   avgt    6   1.418 ±  0.169  ns/op
+ * LineRendering.bresenhamSmallLine   avgt    6   3.057 ±  0.036  ns/op
+ * LineRendering.ddaHugeLine          avgt    6  95.046 ±  8.276  ns/op
+ * LineRendering.ddaLargeLine         avgt    6  24.249 ±  1.874  ns/op
+ * LineRendering.ddaMediumLine        avgt    6   9.362 ±  0.596  ns/op
+ * LineRendering.ddaMicroLine         avgt    6   3.283 ±  0.320  ns/op
+ * LineRendering.ddaSmallLine         avgt    6   3.936 ±  0.374  ns/op
+ * LineRendering.eflaHugeLine         avgt    6  54.311 ±  0.291  ns/op
+ * LineRendering.eflaLargeLine        avgt    6  19.377 ±  0.134  ns/op
+ * LineRendering.eflaMediumLine       avgt    6   9.775 ±  1.472  ns/op
+ * LineRendering.eflaMicroLine        avgt    6   2.905 ±  0.396  ns/op
+ * LineRendering.eflaSmallLine        avgt    6   3.825 ±  0.394  ns/op
+ * LineRendering.wuHugeLine           avgt    6  63.949 ± 17.437  ns/op
+ * LineRendering.wuLargeLine          avgt    6  22.098 ±  1.003  ns/op
+ * LineRendering.wuMediumLine         avgt    6  10.026 ±  0.203  ns/op
+ * LineRendering.wuMicroLine          avgt    6   4.749 ±  0.916  ns/op
+ * LineRendering.wuSmallLine          avgt    6   4.006 ±  0.042  ns/op
+ */
+
 /**
  LineRendering.bresenhamLine  avgt   20  59.452 ± 2.522  ns/op
  LineRendering.ddaLine        avgt   20  91.317 ± 0.684  ns/op
@@ -23,7 +47,11 @@ public class LineRendering {
   private static int width = 1024;
   private static int[] canvas = new int[width * 768];
 
-  private static int[] lineMedium = new int[] {100, 100, 200, 200};
+  private static int[] lineMicro = new int[] {100, 101, 100, 101};
+  private static int[] lineSmall = new int[] {100, 100, 101, 102};
+  private static int[] lineMedium = new int[] {100, 100, 105, 111};
+  private static int[] lineLarge = new int[] {100, 100, 120, 130};
+  private static int[] lineHuge = new int[] {100, 100, 200, 200};
 
   public static void main(String[] args) throws Exception {
     Options opt = new OptionsBuilder()
@@ -31,8 +59,8 @@ public class LineRendering {
         .exclude("Triangle.*")
         .mode(Mode.AverageTime)
         .forks(2)
-        .warmupIterations(10)
-        .measurementIterations(10)
+        .warmupIterations(3)
+        .measurementIterations(3)
         .timeUnit(TimeUnit.NANOSECONDS)
         .build();
 
@@ -40,28 +68,125 @@ public class LineRendering {
   }
 
   @Benchmark
-  public Object wuLine() {
+  public Object wuMicroLine() {
+    wu(lineMicro[0], lineMicro[1], lineMicro[2], lineMicro[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object ddaMicroLine() {
+    dda(lineMicro[0], lineMedium[1], lineMicro[2], lineMicro[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object bresenhamMicroLine() {
+    bresenham(lineMicro[0], lineMicro[1], lineMicro[2], lineMicro[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object eflaMicroLine() {
+    efla_addition_fp_precalc(lineMicro[0], lineMicro[1], lineMicro[2], lineMicro[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object wuSmallLine() {
+    wu(lineSmall[0], lineSmall[1], lineSmall[2], lineSmall[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object ddaSmallLine() {
+    dda(lineSmall[0], lineMedium[1], lineSmall[2], lineSmall[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object bresenhamSmallLine() {
+    bresenham(lineSmall[0], lineSmall[1], lineSmall[2], lineSmall[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object eflaSmallLine() {
+    efla_addition_fp_precalc(lineSmall[0], lineSmall[1], lineSmall[2], lineSmall[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object wuMediumLine() {
     wu(lineMedium[0], lineMedium[1], lineMedium[2], lineMedium[3], 99);
     return canvas;
   }
 
   @Benchmark
-  public Object ddaLine() {
+  public Object ddaMediumLine() {
     dda(lineMedium[0], lineMedium[1], lineMedium[2], lineMedium[3], 99);
     return canvas;
   }
 
   @Benchmark
-  public Object bresenhamLine() {
+  public Object bresenhamMediumLine() {
     bresenham(lineMedium[0], lineMedium[1], lineMedium[2], lineMedium[3], 99);
     return canvas;
   }
 
   @Benchmark
-  public Object eflaLine() {
+  public Object eflaMediumLine() {
     efla_addition_fp_precalc(lineMedium[0], lineMedium[1], lineMedium[2], lineMedium[3], 99);
     return canvas;
   }
+
+  @Benchmark
+  public Object wuLargeLine() {
+    wu(lineLarge[0], lineLarge[1], lineLarge[2], lineLarge[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object ddaLargeLine() {
+    dda(lineLarge[0], lineMedium[1], lineLarge[2], lineLarge[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object bresenhamLargeLine() {
+    bresenham(lineLarge[0], lineLarge[1], lineLarge[2], lineLarge[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object eflaLargeLine() {
+    efla_addition_fp_precalc(lineLarge[0], lineLarge[1], lineLarge[2], lineLarge[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object wuHugeLine() {
+    wu(lineHuge[0], lineHuge[1], lineHuge[2], lineHuge[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object ddaHugeLine() {
+    dda(lineHuge[0], lineMedium[1], lineHuge[2], lineHuge[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object bresenhamHugeLine() {
+    bresenham(lineHuge[0], lineHuge[1], lineHuge[2], lineHuge[3], 99);
+    return canvas;
+  }
+
+  @Benchmark
+  public Object eflaHugeLine() {
+    efla_addition_fp_precalc(lineHuge[0], lineHuge[1], lineHuge[2], lineHuge[3], 99);
+    return canvas;
+  }
+  
 
   void wu(int x0, int y0, int x1, int y1,int clr) {
     //int pix = color.getRGB();

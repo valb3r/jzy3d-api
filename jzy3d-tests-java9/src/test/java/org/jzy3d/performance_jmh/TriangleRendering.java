@@ -139,8 +139,8 @@ public class TriangleRendering {
         .exclude("Line.*")
         .mode(Mode.AverageTime)
         .forks(2)
-        .warmupIterations(10)
-        .measurementIterations(10)
+        .warmupIterations(1)
+        .measurementIterations(1)
         .timeUnit(TimeUnit.NANOSECONDS)
         .build();
 
